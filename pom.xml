@@ -13,7 +13,7 @@
 
     <groupId>cl.respirarysoltar</groupId>
     <artifactId>ms-pagos</artifactId>
-    <version>0.1.0</version>
+    <version>0.3.0</version>
     <name>ms-pagos</name>
     <description>Cobro de sesiones y de inscripciones a talleres vía pasarela de pago externa. Cubre RF-08. Zona PCI: nunca almacena el número de tarjeta (PAN), solo el resultado tokenizado de la pasarela.</description>
 
@@ -25,6 +25,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- Salud del contenedor: /actuator/health/liveness y /readiness (HEALTHCHECK de Docker y Swarm) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -1,5 +1,6 @@
 package cl.respirarysoltar.pagos.api;
 
+import cl.respirarysoltar.pagos.exception.FirmaInvalidaException;
 import cl.respirarysoltar.pagos.exception.RecursoNoEncontradoException;
 import cl.respirarysoltar.pagos.exception.ReglaNegocioException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +25,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> noEncontrado(RecursoNoEncontradoException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ApiError.de(404, "Recurso no encontrado", ex.getMessage(), request));
+    }
+
+    @ExceptionHandler(FirmaInvalidaException.class)
+    public ResponseEntity<ApiError> firmaInvalida(FirmaInvalidaException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ApiError.de(401, "No autorizado", ex.getMessage(), request));
     }
 
     @ExceptionHandler(ReglaNegocioException.class)
