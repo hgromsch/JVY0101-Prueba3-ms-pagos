@@ -4,6 +4,8 @@ import cl.respirarysoltar.pagos.exception.FirmaInvalidaException;
 import cl.respirarysoltar.pagos.exception.RecursoNoEncontradoException;
 import cl.respirarysoltar.pagos.exception.ReglaNegocioException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -20,6 +22,8 @@ import java.util.List;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(RecursoNoEncontradoException.class)
     public ResponseEntity<ApiError> noEncontrado(RecursoNoEncontradoException ex, HttpServletRequest request) {
@@ -58,6 +62,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> errorInesperado(Exception ex, HttpServletRequest request) {
+        // Corrección EP3: antes el error se respondía como 500 sin quedar registrado en ningún log
+        log.error("Error inesperado en {} {}", request.getMethod(), request.getRequestURI(), ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiError.de(500, "Error interno", "Ocurrió un error inesperado", request));
     }
