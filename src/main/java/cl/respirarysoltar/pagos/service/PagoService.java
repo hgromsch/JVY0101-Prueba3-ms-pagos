@@ -54,8 +54,8 @@ public class PagoService {
 
     /** Confirma o rechaza el pago según el evento notificado por la pasarela. */
     public Pago procesarWebhook(WebhookRequest request) {
-        // TODO (AWS): validar la firma del webhook contra el secreto de la pasarela
-        // antes de procesar. Nunca loguear datos de tarjeta.
+        // La firma de la pasarela ya fue validada en el controlador (VerificadorFirmaWebhook).
+        // Nunca loguear datos de tarjeta.
         Pago pago = obtener(request.pagoId());
         if (pago.getEstado() != EstadoPago.PENDIENTE) {
             throw new ReglaNegocioException("El pago ya fue procesado (estado actual: " + pago.getEstado() + ")");
